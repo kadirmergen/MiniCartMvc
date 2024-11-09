@@ -1,0 +1,21 @@
+﻿@using MiniCartMvc.ViewModels;
+@using MiniCartMvc.Controllers;
+
+@model IEnumerable<ProductViewModel>
+
+@{
+    ViewData["Title"] = "List";
+}
+<div class="container pb-5">
+
+<div class="row mt-4">
+    <div class="col-md-3">
+        @Html.Partial("GetCategories", (IEnumerable<Category>)ViewData["Categories"])
+    </div>
+
+    <div class="col-md-9">
+        @Html.Partial("_ProductList", Model)
+    </div>
+</div>
+</div>
+

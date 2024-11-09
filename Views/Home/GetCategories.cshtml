@@ -1,0 +1,28 @@
+﻿@using MiniCartMvc.Models;
+@model IEnumerable<Category>
+
+@if (Model != null && Model.Any())
+{
+    <ul class="list-group">
+        <li class="list-group-item">
+            <a href="/Home/List">
+                <i class="fa fa-chevron-circle-right" aria-hidden="true"></i>
+                All Categories
+            </a>
+        </li>
+        @foreach (var category in Model)
+        {
+            <li class="list-group-item">
+                <a href="/Home/List/@category.Id">
+                    <i class="fa fa-chevron-circle-right" aria-hidden="true"></i>
+                    @category.Name
+                </a>
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>No categories available.</p>
+}
+

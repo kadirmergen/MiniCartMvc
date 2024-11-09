@@ -1,0 +1,42 @@
+﻿@using MiniCartMvc.ViewModels;
+@model IEnumerable<ProductViewModel>
+
+<div class="row">
+
+    @foreach (var product in Model)
+    {
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                @if (!string.IsNullOrEmpty(product.Image))
+                {
+                    <img src="@product.Image" class="card-img-top" alt="@product.Name" width="100%" height="180" />
+                }
+                else
+                {
+                    
+                    <svg class="bd-placeholder-img card-img-top" width="100%" height="180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="@product.Name" preserveAspectRatio="xMidYMid slice" focusable="false">
+                        <title>Placeholder</title>
+                        <rect width="100%" height="100%" fill="#6c757d"></rect>
+                        <text x="50%" y="50%" fill="#dee2e6" dy=".3em" text-anchor="middle" dominant-baseline="middle">Image cap</text>
+                    </svg>
+                }
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <a href="/Home/Details/@product.Id"> @product.Name </a>
+                    </h5>
+                    <p class="card-text description">@product.Description</p>
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted" style="font-size: 1.2em; font-weight: bold; ">
+                        <i class="fa fa-usd" aria-hidden="true"></i>
+                        @product.Price
+                    </small>
+                    <a href="/Home/Details/@product.Id" class="btn btn-success btn-sm float-right">
+                        <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                        View Product
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
