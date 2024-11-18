@@ -1,23 +1,43 @@
 ﻿@using MiniCartMvc.Models;
 @model IEnumerable<Category>
-
+@{
+    var selectedCategory = ViewContext.RouteData.Values["id"]?.ToString();
+}
 @if (Model != null && Model.Any())
 {
     <ul class="list-group">
-        <li class="list-group-item">
-            <a href="/Home/List">
-                <i class="fa fa-chevron-circle-right" aria-hidden="true"></i>
-                All Categories
-            </a>
-        </li>
+
+        <a href="/Home/List" class="list-group-item">
+            <i class="fa fa-chevron-circle-right" aria-hidden="true"></i>
+            All Categories
+        </a>
+
         @foreach (var category in Model)
         {
-            <li class="list-group-item">
-                <a href="/Home/List/@category.Id">
+            if (selectedCategory != null)
+            {
+                if (category.Id == int.Parse(selectedCategory))
+                {
+                    <a href="/Home/List/@category.Id" class="list-group-item active">
+                        <i class="fa fa-chevron-circle-right" aria-hidden="true"></i>
+                        @category.Name
+                    </a>
+                }
+                else
+                {
+                    <a href="/Home/List/@category.Id" class="list-group-item">
+                        <i class="fa fa-chevron-circle-right" aria-hidden="true"></i>
+                        @category.Name
+                    </a>
+                }
+            }
+            else
+            {
+                <a href="/Home/List/@category.Id" class="list-group-item">
                     <i class="fa fa-chevron-circle-right" aria-hidden="true"></i>
                     @category.Name
                 </a>
-            </li>
+            }
         }
     </ul>
 }

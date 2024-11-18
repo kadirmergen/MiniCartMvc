@@ -1,0 +1,49 @@
+﻿@model IEnumerable<MiniCartMvc.Models.Category>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<div class="container mt-5">
+    <h1>Category List</h1>
+    <hr />
+    <form asp-action="Create" method="get">
+        <button type="submit" class="btn btn-primary">Add New Category</button>
+    </form>
+
+    <table class="table table-bordered table-striped mt-3">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                <th style="width: 135px;">
+                    Operations
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        <form asp-action="Edit" asp-route-id="@item.Id" method="get" style="display:inline;">
+                            <button type="submit" class="btn btn-primary btn-sm">Edit</button>
+                        </form>
+                        <form asp-action="Delete" asp-route-id="@item.Id" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -61,13 +61,18 @@ namespace MiniCartMvc.Controllers
             {
                 product = product.Where(i => i.CategoryId == id);
             }
+
+
             var categories = _context.Categories.ToList();
             ViewData["Categories"] = categories;
-            if (product == null) 
+
+            var productList = product.ToList();
+            
+            if (!productList.Any()) 
             {
-                return View("No product avaliable");
+                return View();
             }
-            return View(product.ToList());
+            return View(productList);
         }
 
         /*public IActionResult GetCategories()

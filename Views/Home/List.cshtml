@@ -8,14 +8,31 @@
 }
 <div class="container pb-5">
 
-<div class="row mt-4">
-    <div class="col-md-3">
-        @Html.Partial("GetCategories", (IEnumerable<Category>)ViewData["Categories"])
-    </div>
+    <div class="row mt-4">
+        <div class="col-md-3">
+            @Html.Partial("GetCategories", (IEnumerable<Category>)ViewData["Categories"])
+        </div>
 
-    <div class="col-md-9">
-        @Html.Partial("_ProductList", Model)
+        <div class="col-md-9">
+
+            @if (Model == null || !Model.Any())
+            {
+                <div class="alert alert-warning" role="alert">
+                    <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                    There isn't any product in this category!
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-success" role="alert">
+                    <i class="fa fa-check-square" aria-hidden="true"></i>
+                    <strong>@Model.Count() product(s)</strong> found in this category!
+                </div>
+
+            }
+
+            @Html.Partial("_ProductList", Model)
+        </div>
     </div>
-</div>
 </div>
 
