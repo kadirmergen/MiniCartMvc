@@ -1,0 +1,86 @@
+﻿@model IEnumerable<MiniCartMvc.Models.Product>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="container mt-5">
+    <h1>Product List</h1>
+    <hr />
+    <form asp-action="Create" method="get">
+        <button type="submit" class="btn btn-primary">Add New Product</button>
+    </form>
+    <table class="table table-bordered table-striped mt-3">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Image)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Category.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Price)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsApproved)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <svg class="bd-placeholder-img card-img-top" width="100%" height="180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="@item.Name" preserveAspectRatio="xMidYMid slice" focusable="false">
+                            <title>Placeholder</title>
+                            <rect width="100%" height="100%" fill="#6c757d"></rect>
+                            <text x="50%" y="50%" fill="#dee2e6" dy=".3em" text-anchor="middle" dominant-baseline="middle">Image cap</text>
+                        </svg>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Category.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @if (item.IsApproved)
+                        {
+                            <label class="badge badge-success">
+                                <i class="fa fa-check-circle-o" aria-hidden="true"></i>
+                                Yes
+                            </label>
+                        }
+                        else
+                        {
+                            <label class="badge badge-danger">
+                                <i class="fa fa-times" aria-hidden="true"></i>
+                                No
+                            </label>
+                        }
+                    </td>
+
+                    <td>
+                        <form asp-action="Edit" asp-route-id="@item.Id" method="get" style="display:inline;">
+                            <button type="submit" class="btn btn-primary btn-sm">Edit</button>
+                        </form>
+                        <form asp-action="Details" asp-route-id="@item.Id" method="get" style="display:inline;">
+                            <button type="submit" class="btn btn-warning btn-sm">Details</button>
+                        </form>
+                        <form asp-action="Delete" asp-route-id="@item.Id" method="get" style="display:inline;">
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
