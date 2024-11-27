@@ -1,10 +1,11 @@
-﻿using Microsoft.CodeAnalysis.CodeFixes;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using MiniCartMvc.Models;
+using MiniCartMvc.Entity;
+using MiniCartMvc.Identity;
 
 namespace MiniCartMvc.Data
 {
-    public class DataContext :DbContext
+    public class DataContext : DbContext
     {
         public DataContext(DbContextOptions<DataContext> options) : base (options)
         {

@@ -1,18 +1,18 @@
-﻿@using MiniCartMvc.Models;
+﻿@using MiniCartMvc.Entity;
 @model Product
 @{
     ViewData["Title"] = "Details";
 }
 <div id="product-details" class="container mt-5">
 
-<div class="row">
-    <div class="col-md-6">
-        <img src="/theme/img/camera.jpg" class="img-fluid rounded">
-    </div>
-    <div class="col-md-6">
-        <h1>@Model.Name</h1>
-        @if (Model.Stock>0)
-        {
+    <div class="row">
+        <div class="col-md-6">
+            <img src="/theme/img/camera.jpg" class="img-fluid rounded">
+        </div>
+        <div class="col-md-6">
+            <h1>@Model.Name</h1>
+            @if (Model.Stock > 0)
+            {
                 <span class="badge badge-success">In Stock</span>
             }
             else
@@ -20,78 +20,86 @@
                 <span class="badge badge-danger">Out Of Stock</span>
             }
 
-        <span class="product-number">#2534678</span>
-        <div class="row mt-1">
-            <div class="col-md-12">
-                <div id="description">
-                    @Model.Description
+            <span class="product-number">#2534678</span>
+            <div class="row mt-1">
+                <div class="col-md-12">
+                    <div id="description">
+                        @Model.Description
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="row mt-2">
-            <div class="col-md-4">
-                <i class="fa fa-star" aria-hidden="true"></i>
-                <i class="fa fa-star" aria-hidden="true"></i>
-                <i class="fa fa-star" aria-hidden="true"></i>
-                <i class="fa fa-star" aria-hidden="true"></i>
-                <i class="fa fa-star-half-stroke" aria-hidden="true"></i>
-                <span class="badge badge-success">4.7</span>
+            <div class="row mt-2">
+                <div class="col-md-4">
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                    <i class="fa fa-star-half-stroke" aria-hidden="true"></i>
+                    <span class="badge badge-success">4.7</span>
+                </div>
+                <div id="write-review" class="col-md-4">
+                    <a href="#">
+                        Write a review
+                    </a>
+                </div>
             </div>
-            <div id="write-review" class="col-md-4">
-                <a href="#">
-                    Write a review
-                </a>
-            </div>
-        </div>
-        <div class="row mt-2">
-            <div class="col-md-12">
+            <div class="row mt-2">
+                <div class="col-md-12">
                     <h4 id="product-price">
                         <i class="fa fa-usd" aria-hidden="true"></i>
                         @Model.Price
                     </h4>
+                </div>
             </div>
-        </div>
-        <div class="row mt-2">
-            <div class="col-md-12">
-                <button class="btn btn-success">
-                    <i class="fa fa-cart-plus" aria-hidden="true"></i>
-                    Add To Cart
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
+            <div class="row mt-2">
+                <div class="col-md-12">
 
-<div class="row mt-3">
-    <div class="col-md-12">
-        <div class="bd-example bd-example-tabs">
-            <nav>
-                <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                    <button class="nav-link active" id="nav-description-tab" data-toggle="tab" data-target="#nav-description" type="button" role="tab" aria-controls="nav-description" aria-selected="true">Description</button>
-                    <button class="nav-link" id="nav-payment-tab" data-toggle="tab" data-target="#nav-payment" type="button" role="tab" aria-controls="nav-payment" aria-selected="false">Payment Methods</button>
-                    <button class="nav-link" id="nav-comment-tab" data-toggle="tab" data-target="#nav-comment" type="button" role="tab" aria-controls="nav-comment" aria-selected="false">Reviews</button>
-                </div>
-            </nav>
-            <div class="tab-content" id="nav-tabContent">
-                <div class="tab-pane fade show active" id="nav-description" role="tabpanel" aria-labelledby="nav-description">
-                    <p class="mt-2">The Nikon Camera #2534678 is designed for those seeking top performance in photography. Equipped with advanced sensor technology, it captures sharp and vibrant photos even in low-light conditions. With fast autofocus and a wide dynamic range, you can easily capture every moment with professional-grade quality. Its ergonomic design ensures comfortable handling during extended shooting sessions. Additionally, the camera offers excellent video capabilities for recording cinematic footage.</p>
-                </div>
-                <div class="tab-pane fade" id="nav-payment" role="tabpanel" aria-labelledby="nav-payment">
-                    <p class="mt-2">We offer a variety of secure and convenient payment options to make your shopping experience seamless:</p>
-                    <ul class="list-group mb-3">
-                        <li class="list-group-item">Credit/Debit Cards: Visa, MasterCard, American Express, and Discover are accepted.</li>
-                        <li class="list-group-item">PayPal: Quickly and securely pay using your PayPal account.</li>
-                        <li class="list-group-item">Bank Transfer: Direct bank transfers are available for larger purchases.</li>
-                        <li class="list-group-item">Buy Now, Pay Later: Flexible installment plans through Klarna and Afterpay (subject to eligibility).</li>
-                        <li class="list-group-item">Gift Cards: Redeemable at checkout for partial or full payment.</li>
-                    </ul>
-                    <p class="mt-2">All transactions are encrypted and secure to ensure the protection of your personal and payment information.</p>
-                </div>
-                <div class="tab-pane fade" id="nav-comment" role="tabpanel" aria-labelledby="nav-comment-tab">
-                    <p class="mt-2">fgfdfdgfd</p>
+                    @using (Html.BeginForm("AddToCart", "Carts"))
+                    {
+                        @Html.HiddenFor(i => i.Id)
+                        <button type="submit" class="btn btn-success">
+                        <i class="fa fa-cart-plus" aria-hidden="true"></i>
+                        Add To Cart
+                         </button>
+                    }
+
+
+
                 </div>
             </div>
         </div>
     </div>
-</div>
+
+    <div class="row mt-3">
+        <div class="col-md-12">
+            <div class="bd-example bd-example-tabs">
+                <nav>
+                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                        <button class="nav-link active" id="nav-description-tab" data-toggle="tab" data-target="#nav-description" type="button" role="tab" aria-controls="nav-description" aria-selected="true">Description</button>
+                        <button class="nav-link" id="nav-payment-tab" data-toggle="tab" data-target="#nav-payment" type="button" role="tab" aria-controls="nav-payment" aria-selected="false">Payment Methods</button>
+                        <button class="nav-link" id="nav-comment-tab" data-toggle="tab" data-target="#nav-comment" type="button" role="tab" aria-controls="nav-comment" aria-selected="false">Reviews</button>
+                    </div>
+                </nav>
+                <div class="tab-content" id="nav-tabContent">
+                    <div class="tab-pane fade show active" id="nav-description" role="tabpanel" aria-labelledby="nav-description">
+                        <p class="mt-2">The Nikon Camera #2534678 is designed for those seeking top performance in photography. Equipped with advanced sensor technology, it captures sharp and vibrant photos even in low-light conditions. With fast autofocus and a wide dynamic range, you can easily capture every moment with professional-grade quality. Its ergonomic design ensures comfortable handling during extended shooting sessions. Additionally, the camera offers excellent video capabilities for recording cinematic footage.</p>
+                    </div>
+                    <div class="tab-pane fade" id="nav-payment" role="tabpanel" aria-labelledby="nav-payment">
+                        <p class="mt-2">We offer a variety of secure and convenient payment options to make your shopping experience seamless:</p>
+                        <ul class="list-group mb-3">
+                            <li class="list-group-item">Credit/Debit Cards: Visa, MasterCard, American Express, and Discover are accepted.</li>
+                            <li class="list-group-item">PayPal: Quickly and securely pay using your PayPal account.</li>
+                            <li class="list-group-item">Bank Transfer: Direct bank transfers are available for larger purchases.</li>
+                            <li class="list-group-item">Buy Now, Pay Later: Flexible installment plans through Klarna and Afterpay (subject to eligibility).</li>
+                            <li class="list-group-item">Gift Cards: Redeemable at checkout for partial or full payment.</li>
+                        </ul>
+                        <p class="mt-2">All transactions are encrypted and secure to ensure the protection of your personal and payment information.</p>
+                    </div>
+                    <div class="tab-pane fade" id="nav-comment" role="tabpanel" aria-labelledby="nav-comment-tab">
+                        <p class="mt-2">fgfdfdgfd</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

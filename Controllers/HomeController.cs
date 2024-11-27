@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using MiniCartMvc.Data;
-using MiniCartMvc.Models;
+using MiniCartMvc.Entity;
 using MiniCartMvc.ViewModels;
 using System.Diagnostics;
 

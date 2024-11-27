@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MiniCartMvc.Data;
-using MiniCartMvc.Models;
+using MiniCartMvc.Entity;
 
 namespace MiniCartMvc.Controllers
 {
