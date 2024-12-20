@@ -28,7 +28,7 @@ namespace MiniCartMvc.Controllers
                     Description = i.Description.Length>50?i.Description.Substring(0,47 ) + "..." : i.Description,
                     Price = i.Price,
                     Stock = i.Stock,
-                    Image = i.Image,
+                    Image = i.ImagePath,
                     CategoryId = i.CategoryId
                 }).FirstOrDefault()).ToList();
 
@@ -54,7 +54,7 @@ namespace MiniCartMvc.Controllers
                 Description = i.Description.Length > 50 ? i.Description.Substring(0, 47) + "..." : i.Description,
                 Price = i.Price,
                 Stock = i.Stock,
-                Image = i.Image,
+                Image = i.ImagePath,
                 CategoryId = i.CategoryId
             }).AsQueryable();
             if (id != null)

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ using MiniCartMvc.Entity;
 
 namespace MiniCartMvc.Controllers
 {
+    [Authorize(Roles = "admin")]
     public class ProductsController : Controller
     {
         private readonly DataContext _context;
@@ -22,8 +24,8 @@ namespace MiniCartMvc.Controllers
         // GET: Products
         public async Task<IActionResult> Index()
         {
-            var dataContext = _context.Products.Include(p => p.Category);
-            return View(await dataContext.ToListAsync());
+            var products = await _context.Products.Include(p => p.Category).ToListAsync();
+            return View(products);
         }
 
         // GET: Products/Details/5
@@ -57,10 +59,28 @@ namespace MiniCartMvc.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,Price,Stock,Image,IsApproved,CategoryId")] Product product)
+        public async Task<IActionResult> Create([Bind("Id,Name,Description,Price,Stock,Image,IsApproved,CategoryId")] Product product, IFormFile? image)
         {
             if (ModelState.IsValid)
             {
+                if (image != null && image.Length > 0)
+                {
+                    var folderPath = Path.Combine("wwwroot", "images");
+                    if (!Directory.Exists(folderPath))
+                    {
+                        Directory.CreateDirectory(folderPath);
+                    }
+
+                    var uniqueFileName = $"{Guid.NewGuid()}_{product.Image.FileName}";
+                    var filePath = Path.Combine(folderPath, uniqueFileName);
+
+
+                    using (var stream=new FileStream(filePath, FileMode.Create))
+                    {
+                        await image.CopyToAsync(stream);
+                    }
+                    product.ImagePath = $"/images/{uniqueFileName}";
+                }
                 _context.Add(product);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -155,14 +175,14 @@ namespace MiniCartMvc.Controllers
             {
                 _context.Products.Remove(product);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ProductExists(int id)
         {
-          return (_context.Products?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Products?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

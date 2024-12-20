@@ -12,8 +12,8 @@ using MiniCartMvc.Identity;
 namespace MiniCartMvc.Migrations.IdentityData
 {
     [DbContext(typeof(IdentityDataContext))]
-    [Migration("20241124100234_kkkmmaacdvfm")]
-    partial class kkkmmaacdvfm
+    [Migration("20241207130832_newonega")]
+    partial class newonega
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

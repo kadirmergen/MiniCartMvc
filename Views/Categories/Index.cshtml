@@ -1,6 +1,5 @@
 ﻿@using MiniCartMvc.Entity
 @model IEnumerable<Category>
-
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
@@ -40,7 +39,7 @@
                         <form asp-action="Edit" asp-route-id="@item.Id" method="get" style="display:inline;">
                             <button type="submit" class="btn btn-primary btn-sm">Edit</button>
                         </form>
-                        <form asp-action="Delete" asp-route-id="@item.Id" method="get" style="display:inline;" >
+                        <form asp-action="Delete" asp-route-id="@item.Id" method="get" style="display:inline;">
                             <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                         </form>
                     </td>
