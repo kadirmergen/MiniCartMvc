@@ -53,7 +53,16 @@ namespace MiniCartMvc.Controllers
             var session = _httpContextAccessor.HttpContext.Session;
 
             // Session'dan Cart nesnesini al
-            var cart = session.GetObjectFromJson<Cart>("Cart");
+
+            if (string.IsNullOrEmpty(_httpContextAccessor.HttpContext.User.Identity.Name))
+            {
+                throw new InvalidOperationException("Kullanıcı kimliği alınamadı.");
+            }
+
+            // Kullanıcıya özel session anahtarı oluştur
+            var cartKey = $"Cart_{_httpContextAccessor.HttpContext.User.Identity.Name}";
+
+            var cart = session.GetObjectFromJson<Cart>(cartKey);
 
             // Eğer null ise yeni bir Cart oluştur ve session'a kaydet
             if (cart == null)
@@ -66,7 +75,18 @@ namespace MiniCartMvc.Controllers
         public void SaveCart(Cart cart)
         {
             var session = _httpContextAccessor.HttpContext.Session;
-            session.SetObjectAsJson("Cart", cart);
+
+            // Kullanıcı adı doğrudan alınıyor
+            if (string.IsNullOrEmpty(_httpContextAccessor.HttpContext.User.Identity.Name))
+            {
+                throw new InvalidOperationException("Kullanıcı kimliği alınamadı.");
+            }
+
+            // Kullanıcıya özel session anahtarı oluştur
+            var cartKey = $"Cart_{_httpContextAccessor.HttpContext.User.Identity.Name}";
+
+            // Cart nesnesini session'a kaydet
+            session.SetObjectAsJson(cartKey, cart);
         }
 
         public IActionResult Summary()

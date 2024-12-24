@@ -1,41 +1,93 @@
-﻿@model IEnumerable<MiniCartMvc.Models.AdminOrderModel>
-
+﻿@model IEnumerable<MiniCartMvc.ViewModels.OrderViewModel>
 @{
     ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+    if (User.IsInRole("admin"))
+    {
+        Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+
 }
 
 <div class="container mt-5">
     <h2>Orders</h2>
     <hr />
-    <table class="table table-bordered table-striped">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Order Number</th>
-                <th>Order Date</th>
-                <th>Order Status</th>
-                <th>Product Count</th>
-                <th>Total</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
+    @if (User.IsInRole("admin"))
+    {
+        <table class="table table-bordered table-striped">
+            <thead>
                 <tr>
-                    <td>@item.Id</td>
-                    <td>@item.OrderNumber</td>
-                    <td>@item.OrderDate</td>
-                    <td>@item.OrderState</td>
-                    <td>@item.Count</td>
-                    <td>@item.Total</td>
-                    <td>
-                        @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-primary btn-sm" })
-                    </td>
-
+                    <th>Id</th>
+                    <th>Order Number</th>
+                    <th>Order Date</th>
+                    <th>Order Status</th>
+                    <th>Product Count</th>
+                    <th>Total</th>
+                    <th></th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.OrderNumber</td>
+                        <td>@item.OrderDate</td>
+                        <td>@item.OrderState</td>
+                        <td>@item.Count</td>
+                        <td>@item.Total</td>
+                        <td>
+                            @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-primary btn-sm" })
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        @if (!Model.Any())
+        {
+            <div class="alert alert-warning" role="alert">
+                <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                You don't have any order yet!
+            </div>
+        }
+        else
+        {
+
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Order Number</th>
+                        <th>Order Date</th>
+                        <th>Order Status</th>
+                        <th>Total</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Id</td>
+                            <td>@item.OrderNumber</td>
+                            <td>@item.OrderDate</td>
+                            <td>@item.OrderState</td>
+                            <td>@item.Total</td>
+                            <td>
+                                @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-primary btn-sm" })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    }
 </div>

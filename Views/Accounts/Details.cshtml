@@ -15,11 +15,15 @@
                 <dd class="col-sm-9">
                     @if (Model.OrderState == EnumOrderState.Waiting)
                     {
-                        <span class="badge-danger">@Model.OrderState</span>
+                        <span class="badge-warning">@Model.OrderState</span>
                     }
                     else if (Model.OrderState == EnumOrderState.Completed)
                     {
                         <span class="badge-success">@Model.OrderState</span>
+                    }
+                    else if(Model.OrderState==EnumOrderState.Canceled)
+                    {
+                        <span class="badge-danger">@Model.OrderState</span>
                     }
                 </dd>
 

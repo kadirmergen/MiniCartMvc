@@ -25,23 +25,30 @@
 
                 <dt class="col-sm-3">Order State</dt>
                 <dd class="col-sm-9">
-                    @using (Html.BeginForm("UpdateOrderState", "Orders", FormMethod.Post))
+                    @if (User.IsInRole("admin"))
                     {
-                        @Html.HiddenFor(i => i.OrderId)
-                        <dl class="row">
-                            <dt class="col-md-6">
-                                @Html.DropDownListFor(
-                                         model => model.OrderState,
-                                         (List<SelectListItem>
-                                         )ViewBag.OrderStates,
-                                         "Select Order State",
-                                         new { @class = "form-control" })
-                            </dt>
-                            <dd class="col-md-6">
-                                <button type="submit" class="btn btn-primary">Save</button>
-                            </dd>
-                        </dl>
+                        @using (Html.BeginForm("UpdateOrderState", "Orders", FormMethod.Post))
+                        {
+                            @Html.HiddenFor(i => i.OrderId)
+                            <dl class="row">
+                                <dt class="col-md-6">
+                                    @Html.DropDownListFor(
+                                             model => model.OrderState,
+                                             (List<SelectListItem>
+                                             )ViewBag.OrderStates,
+                                             "Select Order State",
+                                             new { @class = "form-control" })
+                                </dt>
+                                <dd class="col-md-6">
+                                    <button type="submit" class="btn btn-primary">Save</button>
+                                </dd>
+                            </dl>
 
+                        }
+                    }
+                    else
+                    {
+                        @Html.Partial("_OrderStateBadge", Model.OrderState)
                     }
                 </dd>
 

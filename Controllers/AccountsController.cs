@@ -6,6 +6,7 @@ using MiniCartMvc.Models;
 using MiniCartMvc.Data;
 using static MiniCartMvc.Models.OrderDetailsModel;
 using Microsoft.AspNetCore.Authorization;
+using MiniCartMvc.ViewModels;
 
 namespace MiniCartMvc.Controllers
 {
@@ -29,7 +30,7 @@ namespace MiniCartMvc.Controllers
         public ActionResult Index()
         {
             var username = User.Identity.Name;
-            var orders = _context.Orders.Where(i => i.UserName == username).Select(i => new UserOrderModel()
+            var orders = _context.Orders.Where(i => i.UserName == username).Select(i => new OrderViewModel()
             {
                 Id = i.Id,
                 OrderNumber = i.OrderNumber,

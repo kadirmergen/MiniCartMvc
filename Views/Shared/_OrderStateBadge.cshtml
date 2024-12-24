@@ -1,0 +1,23 @@
+﻿@model EnumOrderState
+@{
+    // Duruma göre CSS sınıfı ve ikon belirleniyor
+    var badgeClass = Model switch
+    {
+        EnumOrderState.Completed => "badge-success", // Tamamlandı için yeşil
+        EnumOrderState.Waiting => "badge-warning",  // Bekleniyor için sarı
+        EnumOrderState.Canceled => "badge-danger",  // İptal için kırmızı
+        _ => "badge-secondary"                     // Varsayılan gri
+    };
+
+    var icon = Model switch
+    {
+        EnumOrderState.Completed => "<i class='fa fa-check'></i>", // Tamamlandı için onay işareti
+        EnumOrderState.Waiting => "<i class='fa fa-clock'></i>",  // Bekleniyor için saat
+        EnumOrderState.Canceled => "<i class='fa fa-times'></i>", // İptal için çarpı
+        _ => "<i class='fa fa-info-circle'></i>"                 // Varsayılan bilgi simgesi
+    };
+}
+
+<span class="badge @badgeClass">
+    @Html.Raw(icon) @Model.ToString()
+</span>

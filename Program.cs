@@ -18,7 +18,7 @@ namespace MiniCartMvc
             builder.Services.AddDistributedMemoryCache(); // In-memory cache
             builder.Services.AddSession(options =>
             {
-                options.IdleTimeout = TimeSpan.FromMinutes(20); // Session timeout
+                options.IdleTimeout = TimeSpan.FromHours(24); // Session timeout
                 options.Cookie.HttpOnly = true; // Cookie güvenliði
                 options.Cookie.IsEssential = true; // GDPR uyumu için
             });

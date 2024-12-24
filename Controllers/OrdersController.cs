@@ -4,11 +4,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using MiniCartMvc.Data;
 using MiniCartMvc.Entity;
 using MiniCartMvc.Models;
+using MiniCartMvc.ViewModels;
 using static MiniCartMvc.Models.OrderDetailsModel;
 
 namespace MiniCartMvc.Controllers
 {
-    [Authorize(Roles = "admin")]
+    //[Authorize(Roles = "admin")]
     public class OrdersController : Controller
     {
         private readonly DataContext _context;
@@ -18,19 +19,36 @@ namespace MiniCartMvc.Controllers
             _context = context;
         }
 
+        [Authorize]
         public IActionResult Index()
         {
-            var orders = _context.Orders.Select(i => new AdminOrderModel()
-            {
-                Id = i.Id,
-                OrderNumber = i.OrderNumber,
-                OrderDate = i.OrderDate,
-                OrderState = i.OrderState,
-                Total = i.Total,
-                Count = i.OrderLines.Count
-            }).OrderByDescending(i => i.OrderDate).ToList();
+            string username = User.Identity.Name;
 
-            return View(orders);
+            if (User.IsInRole("admin"))
+            {
+                var orders = _context.Orders.Select(i => new OrderViewModel()
+                {
+                    Id = i.Id,
+                    OrderNumber = i.OrderNumber,
+                    OrderDate = i.OrderDate,
+                    OrderState = i.OrderState,
+                    Total = i.Total,
+                    Count = i.OrderLines.Count
+                }).OrderByDescending(i => i.OrderDate).ToList();
+
+                return View(orders);
+            }
+
+            var ordersForCustomer = _context.Orders.Where(u => u.UserName == username).Select(o => new OrderViewModel()
+            {
+                Id = o.Id,
+                OrderNumber = o.OrderNumber,
+                OrderDate = o.OrderDate,
+                OrderState = o.OrderState,
+                Total = o.Total
+            }).OrderByDescending(a => a.OrderDate).ToList();
+
+            return View(ordersForCustomer);
         }
 
         public ActionResult Details(int id)
