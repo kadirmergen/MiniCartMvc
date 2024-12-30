@@ -6,6 +6,7 @@ using MiniCartMvc.Entity;
 using MiniCartMvc.Models;
 using MiniCartMvc.ViewModels;
 using static MiniCartMvc.Models.OrderDetailsModel;
+using static NuGet.Packaging.PackagingConstants;
 
 namespace MiniCartMvc.Controllers
 {
@@ -20,8 +21,10 @@ namespace MiniCartMvc.Controllers
         }
 
         [Authorize]
-        public IActionResult Index()
+        public IActionResult Index(string? search)
         {
+            ViewData["IsAdminDashboard"] = true;
+
             string username = User.Identity.Name;
 
             if (User.IsInRole("admin"))
@@ -35,6 +38,14 @@ namespace MiniCartMvc.Controllers
                     Total = i.Total,
                     Count = i.OrderLines.Count
                 }).OrderByDescending(i => i.OrderDate).ToList();
+
+                // Arama işlemi
+                if (!string.IsNullOrEmpty(search))
+                {
+                    string lowerSearch = search.ToLower();
+                    // Arama sonuçlarını filtrele ve tekrar listeye dönüştür
+                    orders = orders.Where(o => o.OrderNumber.ToLower().Contains(lowerSearch)).ToList();
+                }
 
                 return View(orders);
             }
@@ -50,7 +61,8 @@ namespace MiniCartMvc.Controllers
 
             return View(ordersForCustomer);
         }
-
+        
+        [Authorize]
         public ActionResult Details(int id)
         {
             var entity = _context.Orders.Where(i => i.Id == id).Select(i => new OrderDetailsModel()

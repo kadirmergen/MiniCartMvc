@@ -21,10 +21,12 @@ namespace MiniCartMvc.Controllers
         }
 
         // GET: Categories
-        [Authorize(Roles = "admin")]
+        [Authorize]
         public async Task<IActionResult> Index()
         {
-              return _context.Categories != null ? 
+            ViewData["IsAdminDashboard"] = true;
+
+            return _context.Categories != null ? 
                           View(await _context.Categories.ToListAsync()) :
                           Problem("Entity set 'DataContext.Categories'  is null.");
         }

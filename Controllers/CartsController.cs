@@ -18,6 +18,8 @@ namespace MiniCartMvc.Controllers
         }
         public IActionResult Index()
         {
+            ViewData["IsAdminDashboard"] = false;
+
             var cart = GetCart();
             ViewData["Cart"] = cart;  // ViewData'ya güncel cart'ı ekle
             return View(cart);

@@ -1,107 +1,50 @@
-﻿@model MiniCartMvc.Models.OrderDetailsModel
-
+﻿@model MiniCartMvc.ViewModels.AccountSettingsViewModel
 @{
     ViewData["Title"] = "Details";
 }
 
+
+
 <div class="container mt-5">
-    <div class="row">
-        <div class="col-md-12">
-            <h2>Order Details Information</h2>
-            <hr />
-            <dl class="row">
-
-                <dt class="col-sm-3">Order State</dt>
-                <dd class="col-sm-9">
-                    @if (Model.OrderState == EnumOrderState.Waiting)
-                    {
-                        <span class="badge-warning">@Model.OrderState</span>
-                    }
-                    else if (Model.OrderState == EnumOrderState.Completed)
-                    {
-                        <span class="badge-success">@Model.OrderState</span>
-                    }
-                    else if(Model.OrderState==EnumOrderState.Canceled)
-                    {
-                        <span class="badge-danger">@Model.OrderState</span>
-                    }
-                </dd>
-
-                <dt class="col-sm-3">Order Id</dt>
-                <dd class="col-sm-9">@Model.OrderId</dd>
-
-                <dt class="col-sm-3">Order Number</dt>
-                <dd class="col-sm-9">@Model.OrderNumber</dd>
-
-                <dt class="col-sm-3">Total</dt>
-                <dd class="col-sm-9">
-                    <i class="fa fa-usd" aria-hidden="true"></i>
-                    @Model.Total
-                </dd>
-
-                <dt class="col-sm-3">Order Date</dt>
-                <dd class="col-sm-9">@Model.OrderDate</dd>
-
-                <dt class="col-sm-3">Address</dt>
-                <dd class="col-sm-9">
-                    @Model.AddressTitle
-                    <hr />
-                    @Model.Address
-                    <br />
-                    @Model.City - @Model.Strict - @Model.Street
-                    <br />
-                    @Model.ZipCode
-                </dd>
-
-                <dt class="col-sm-3">Products</dt>
-                <dd class="col-sm-9">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Image</th>
-                                <th>Product Name</th>
-                                <th>Quantity</th>
-                                <th>Price</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in Model.OrderLines)
-                            {
-
-                                <tr>
-                                    <td>
-                                        <svg class="bd-placeholder-img card-img-top" width="100%" height="180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="@item.ProductName" preserveAspectRatio="xMidYMid slice" focusable="false">
-                                            <title>Placeholder</title>
-                                            <rect width="100%" height="100%" fill="#6c757d"></rect>
-                                            <text x="50%" y="50%" fill="#dee2e6" dy=".3em" text-anchor="middle" dominant-baseline="middle">Image cap</text>
-                                        </svg>
-                                    </td>
-                                    <td>
-                                        @item.ProductName
-                                    </td>
-                                    <td>
-                                        @item.Quantity
-                                    </td>
-                                    <td>
-                                        <i class="fa fa-usd" aria-hidden="true"></i>
-                                        @item.Price
-                                    </td>
-                                    <td>
-                                        <a href="/Home/Details/@item.ProductId" class="btn btn-primary btn-sm" target="_blank">
-                                            <i class="fa fa-arrow-right" aria-hidden="true"></i>
-                                            Product Details
-                                        </a>
-                                    </td>
-
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </dd>
-
-            </dl>
-
+    <h2>Account Settings</h2>
+    <hr />
+    
+    @if (ViewData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            <i class="fa fa-check-circle" aria-hidden="true"></i> 
+            @ViewData["SuccessMessage"]
         </div>
+    }
+    @if (ViewData["PasswordChangedMessage"] != null)
+    {
+        <div class="alert alert-success">
+            <i class="fa fa-check-circle" aria-hidden="true"></i>
+            @ViewData["PasswordChangedMessage"]
+        </div>
+    }
+
+    <div>
+        <h3>Your Account Information</h3>
+        <hr />
+        <p><strong>Name:</strong> @Model.Name</p>
+        <p><strong>Surname:</strong> @Model.Surname</p>
+        <p><strong>Username:</strong> @Model.Username</p>
+        <p><strong>Email:</strong> @Model.Email</p>
+        <p><strong>Phone Number:</strong> @Model.PhoneNumber</p>
+    </div>
+
+
+    <div>
+        <a href="/Accounts/Edit">Change Account Settings</a>
+        
     </div>
 </div>
+
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}

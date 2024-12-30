@@ -12,12 +12,16 @@
     }
 
 }
-
 <div class="container mt-5">
     <h2>Orders</h2>
     <hr />
     @if (User.IsInRole("admin"))
     {
+        <!-- Search Form -->
+        <form method="get" action="@Url.Action("Index", "Orders")" class="form-inline mb-3">
+            <input type="text" name="search" class="form-control mr-2" placeholder="Search Order Number" value="@ViewContext.HttpContext.Request.Query["search"]" />
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>

@@ -7,6 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="theme\css\style.css" />
+    <Content Include="theme\home.html" />
+    <Content Include="theme\img\bbg.jpg" />
+    <Content Include="theme\img\camera.jpg" />
+    <Content Include="theme\js\svg.js" />
+    <Content Include="theme\product-details.html" />
+    <Content Include="theme\product-list.html" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNet.Identity.Core" Version="2.2.4" />
     <PackageReference Include="Microsoft.AspNet.Identity.EntityFramework" Version="2.2.4" />
     <PackageReference Include="Microsoft.AspNet.Identity.Owin" Version="2.2.4" />

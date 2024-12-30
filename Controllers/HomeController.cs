@@ -20,6 +20,8 @@ namespace MiniCartMvc.Controllers
 
         public IActionResult Index()
         {
+            ViewData["IsAdminDashboard"] = false;
+
             var randomProducts = _context.Categories.OrderBy(c => Guid.NewGuid())
                 .Select(c => c.Products!.OrderBy(p => Guid.NewGuid()).Select(i => new ProductViewModel()
                 {

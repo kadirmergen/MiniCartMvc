@@ -9,11 +9,22 @@
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                 @if (User.IsInRole("admin"))
                 {
-                    <a class="dropdown-item" href="@Url.Action("Index", "Products")">Admin Dashboard</a>
+                    var isAdminDashboard = ViewData["IsAdminDashboard"] as bool? ?? false;
+
+                    if (isAdminDashboard)
+                    {
+                        // Eğer Admin Dashboard'daysanız MiniCartMvc bağlantısını göster
+                        <a class="dropdown-item" href="@Url.Action("Index", "Home")">MiniCartMvc</a>
+                    }
+                    else
+                    {
+                        // Eğer MiniCartMvc tarafındaysanız Admin Dashboard bağlantısını göster
+                        <a class="dropdown-item" href="@Url.Action("Index", "Products")">Admin Dashboard</a>
+                    }
                 }
                 else
                 {
-                    <a class="dropdown-item" href="@Url.Action("Profile", "Accounts")">Account Settings</a>
+                    <a class="dropdown-item" href="@Url.Action("Details", "Accounts")">Account Settings</a>
                     <a class="dropdown-item" href="@Url.Action("Index", "Orders")">My Orders</a>
                 }
                 <div class="dropdown-divider"></div>

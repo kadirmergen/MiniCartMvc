@@ -1,7 +1,16 @@
 ﻿@model MiniCartMvc.Models.OrderDetailsModel
 @{
-    ViewData["Title"] = "Details";
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    if (User.IsInRole("admin"))
+    {
+        ViewData["Title"] = "Details";
+        Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    }
+    else
+    {
+        ViewData["Title"] = "Details";
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+    
 }
 
 <div class="container mt-5">

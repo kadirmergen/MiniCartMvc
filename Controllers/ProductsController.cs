@@ -24,6 +24,8 @@ namespace MiniCartMvc.Controllers
         // GET: Products
         public async Task<IActionResult> Index()
         {
+            ViewData["IsAdminDashboard"] = true;
+
             var products = await _context.Products.Include(p => p.Category).ToListAsync();
             return View(products);
         }
