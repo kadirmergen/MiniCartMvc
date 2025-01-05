@@ -20,5 +20,7 @@ namespace MiniCartMvc.Entity
         [NotMapped]
         public IFormFile? Image { get; set; }
 
+        public List<Comment>? Comments { get; set; } = new List<Comment>();
+
     }
 }

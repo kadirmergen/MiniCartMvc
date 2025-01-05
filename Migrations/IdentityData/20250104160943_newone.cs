@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MiniCartMvc.Migrations.IdentityData
 {
-    public partial class newonega : Migration
+    public partial class newone : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

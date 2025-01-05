@@ -38,7 +38,6 @@ namespace MiniCartMvc.Controllers
                 Total = i.Total
             }).OrderByDescending(i => i.OrderDate).ToList();
 
-
             return View(orders);
         }
         private async Task<ApplicationUser> GetCurrentUserAsync()

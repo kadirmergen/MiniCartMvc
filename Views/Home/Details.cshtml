@@ -1,5 +1,5 @@
 ﻿@using MiniCartMvc.Entity;
-@model Product
+@model MiniCartMvc.ViewModels.ProductDetailsViewModel
 @{
     ViewData["Title"] = "Details";
 }
@@ -7,9 +7,9 @@
 
     <div class="row">
         <div class="col-md-6">
-            @if (Model.ImagePath != null)
+            @if (Model.Image != null)
             {
-                <img src="@Model.ImagePath" class="card-img-top" alt="@Model.ImagePath" width="auto" height="auto" />
+                <img src="@Model.Image" class="card-img-top" alt="@Model.Image" width="auto" height="auto" />
             }
             else
             {
@@ -107,7 +107,36 @@
                         <p class="mt-2">All transactions are encrypted and secure to ensure the protection of your personal and payment information.</p>
                     </div>
                     <div class="tab-pane fade" id="nav-comment" role="tabpanel" aria-labelledby="nav-comment-tab">
-                        <p class="mt-2">fgfdfdgfd</p>
+                        <h3 class="mt-2">Customer Reviews</h3>
+
+
+                        @if (Model.Comments.Any())
+                        {
+                            foreach (var comment in Model.Comments)
+                            {
+                                <div class="card mb-2">
+                                    <div class="card-body">
+                                        <h5 class="card-title">@comment.Username</h5>
+                                        <p class="card-text">@comment.Content</p>
+                                        <footer class="blockquote-footer">
+                                            <small>@comment.CreatedAt.ToString("dd/MM/yyyy HH:mm")</small>
+                                        </footer>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <p>No reviews yet. Be the first to write one!</p>
+                        }
+                        <h4 class="mt-5">Make a Review</h4>
+                        <form asp-action="AddComment" method="post">
+                            <input type="hidden" name="productId" value="@Model.Id" />
+                            <div class="form-group">
+                                <textarea class="form-control" name="content" placeholder="Write your review here..." rows="3" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit Review</button>
+                        </form>
                     </div>
                 </div>
             </div>
