@@ -114,6 +114,24 @@ namespace MiniCartMvc.Controllers
                 TempData["CommentNullError"] = "You have to write something to make comment.";
                 return RedirectToAction("Details", new { id = productId });
             }
+
+            var userName = User.Identity?.Name;
+
+            if (string.IsNullOrWhiteSpace(userName))
+            {
+                TempData["AddCommentLoginError"] = "You must be logged in to add a comment.";
+                return RedirectToAction("Details", new { id = productId });
+            }
+            var hasPurchased = _context.Orders.Where(o => o.UserName == userName && o.OrderState == EnumOrderState.Completed)
+            .SelectMany(o => o.OrderLines)
+            .Any(ol => ol.ProductId == productId);
+
+            if (!hasPurchased)
+            {
+                TempData["NotPurchasedError"] = "You can only comment on products you have purchased.";
+                return RedirectToAction("Details", new { id = productId });
+            }
+            
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             var comment = new Comment
@@ -122,9 +140,6 @@ namespace MiniCartMvc.Controllers
                 ProductId = productId,
                 UserId = userId
             };
-            Console.WriteLine($"UserId: {userId}");
-            Console.WriteLine($"ProductId: {productId}");
-            Console.WriteLine($"Content: {content}");
             _context.Comments.Add(comment);
             _context.SaveChanges();
             return RedirectToAction("Details", new { id = productId });

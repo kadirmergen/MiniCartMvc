@@ -4,9 +4,29 @@
     ViewData["Title"] = "Details";
 }
 <div id="product-details" class="container mt-5">
+    @if (TempData["NotPurchasedError"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["NotPurchasedError"]
+        </div>
+    }
 
+    @if (TempData["AddCommentLoginError"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["AddCommentLoginError"]
+        </div>
+    }
+
+    @if (TempData["CommentNullError"] != null)
+    {
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            @TempData["CommentNullError"]
+        </div>
+    }
     <div class="row">
         <div class="col-md-6">
+
             @if (Model.Image != null)
             {
                 <img src="@Model.Image" class="card-img-top" alt="@Model.Image" width="auto" height="auto" />
@@ -108,8 +128,6 @@
                     </div>
                     <div class="tab-pane fade" id="nav-comment" role="tabpanel" aria-labelledby="nav-comment-tab">
                         <h3 class="mt-2">Customer Reviews</h3>
-
-
                         @if (Model.Comments.Any())
                         {
                             foreach (var comment in Model.Comments)
@@ -133,7 +151,7 @@
                         <form asp-action="AddComment" method="post">
                             <input type="hidden" name="productId" value="@Model.Id" />
                             <div class="form-group">
-                                <textarea class="form-control" name="content" placeholder="Write your review here..." rows="3" required></textarea>
+                                <textarea class="form-control" name="content" placeholder="Write your review here..." rows="3"></textarea>
                             </div>
                             <button type="submit" class="btn btn-primary">Submit Review</button>
                         </form>
