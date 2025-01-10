@@ -10,7 +10,7 @@
     <hr />
     <div class="row">
         <div class="col-md-4">
-            <form asp-action="Edit">
+            <form asp-action="Edit" method="post" enctype="multipart/form-data">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="Id" />
                 <div class="form-group">
@@ -33,15 +33,16 @@
                     <input asp-for="Stock" class="form-control" />
                     <span asp-validation-for="Stock" class="text-danger"></span>
                 </div>
+
                 <div class="form-group">
                     <label asp-for="Image" class="control-label"></label>
-                    <input asp-for="Image" class="form-control" />
+                    <div class="input-group">
+                        <div class="custom-file">
+                            <input type="file" asp-for="Image" class="custom-file-input" id="inputGroupFile">
+                            <label class="custom-file-label" for="inputGroupFile">Select a file...</label>
+                        </div>
+                    </div>
                     <span asp-validation-for="Image" class="text-danger"></span>
-                </div>
-                <div class="form-group form-check">
-                    <label class="form-check-label">
-                        <input class="form-check-input" asp-for="IsApproved" /> @Html.DisplayNameFor(model => model.IsApproved)
-                    </label>
                 </div>
                 <div class="form-group">
                     <label asp-for="CategoryId" class="control-label">Category Name</label>
@@ -62,4 +63,12 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script>
+        document.getElementById('inputGroupFile').addEventListener('change', function (e) {
+            // Seçilen dosyanın adını al
+            var fileName = e.target.files[0].name;
+            // Etiketi güncelle
+            e.target.nextElementSibling.innerText = fileName;
+        });
+    </script>
 }

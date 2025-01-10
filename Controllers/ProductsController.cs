@@ -105,6 +105,7 @@ namespace MiniCartMvc.Controllers
                 return NotFound();
             }
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", product.CategoryId);
+            TempData["CurrentImagePath"] = product.Image;
             return View(product);
         }
 
@@ -113,18 +114,34 @@ namespace MiniCartMvc.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Price,Stock,Image,IsApproved,CategoryId")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Price,Stock,Image,IsApproved,CategoryId")] Product product, IFormFile image)
         {
             if (id != product.Id)
             {
                 return NotFound();
             }
 
+            if (image != null && image.Length > 0) 
+            {
+                var uniqueFileName = $"{Guid.NewGuid()}_{product.Image.FileName}";
+                var filePath = Path.Combine("wwwroot/images", uniqueFileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await image.CopyToAsync(stream);
+                }
+                product.ImagePath = $"/images/{uniqueFileName}";
+            }
+            else
+            {
+                product.ImagePath = TempData["CurrentImagePath"] as string; // Eski resmi geri yükle
+            }
+
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(product);
+                    _context.Products.Update(product);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
