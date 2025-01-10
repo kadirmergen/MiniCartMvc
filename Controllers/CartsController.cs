@@ -9,12 +9,12 @@ namespace MiniCartMvc.Controllers
     public class CartsController : Controller
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly DataContext _dataContext;
+        private readonly DataContext _context;
 
         public CartsController(IHttpContextAccessor httpContextAccessor, DataContext dataContext)
         {
             _httpContextAccessor = httpContextAccessor;
-            _dataContext = dataContext;
+            _context = dataContext;
         }
         public IActionResult Index()
         {
@@ -27,7 +27,7 @@ namespace MiniCartMvc.Controllers
 
         public IActionResult AddToCart(int Id)
         {
-            Product product = _dataContext.Products.Where(i => i.Id == Id).FirstOrDefault();
+            Product product = _context.Products.Where(i => i.Id == Id).FirstOrDefault();
             if (product != null)
             {
                 var cart = GetCart();
@@ -39,7 +39,7 @@ namespace MiniCartMvc.Controllers
 
         public IActionResult RemoveFromCart(int Id)
         {
-            Product product = _dataContext.Products.Where(i => i.Id == Id).FirstOrDefault();
+            Product product = _context.Products.Where(i => i.Id == Id).FirstOrDefault();
             if (product != null)
             {
                 var cart = GetCart();
@@ -164,8 +164,8 @@ namespace MiniCartMvc.Controllers
 
             }
 
-            _dataContext.Orders.Add(order);
-            _dataContext.SaveChanges();
+            _context.Orders.Add(order);
+            _context.SaveChanges();
         }
     }
 }

@@ -7,15 +7,15 @@
         color: white;
     }
 </style>
+@if (User.Identity.IsAuthenticated)
+{
+    <ul class="navbar-nav my-2 my-lg-0">
+        <li id="cart" class="nav-item">
+            <a class="nav-link" href="/Carts">
+                <i class="fa fa-cart-plus" aria-hidden="true"></i>
+                (@cart?.CartLines?.Count)
+            </a>
 
-
-<ul class="navbar-nav my-2 my-lg-0">
-    <li id="cart" class="nav-item">
-        <a class="nav-link" href="/Carts">
-            <i class="fa fa-cart-plus" aria-hidden="true"></i>
-            (@cart?.CartLines?.Count)
-        </a>
-
-    </li>
-</ul>
-
+        </li>
+    </ul>
+}

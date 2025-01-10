@@ -147,63 +147,7 @@ namespace MiniCartMvc.Controllers
             return RedirectToAction("Details", new { id = productId });
         }
 
-        /*[HttpPost]
-        public IActionResult RateProduct(int productId, int score)
-        {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            if (string.IsNullOrWhiteSpace(userId))
-            {
-                TempData["UserNotFoundError"] = "You must be logged in to rate a product.";
-                return RedirectToAction("Details", new { id = productId });
-            }
-
-            var hasPurchased = _context.Orders
-                .Include(o => o.OrderLines)
-                .Any(o => o.OrderLines.Any(ol => ol.ProductId == productId) &&
-                    o.UserName == userId &&
-                    o.OrderState == EnumOrderState.Completed);
-
-            if (!hasPurchased)
-            {
-                TempData["RateError"] = "You can only rate products you have purchased.";
-                return RedirectToAction("Details", new { id = productId });
-            }
-
-            var existingRating = _context.Ratings.FirstOrDefault(r => r.ProductId == productId && r.UserId == userId);
-
-            if (existingRating != null)
-            {
-                existingRating.Score = score;
-            }
-            else
-            {
-                var rating = new Rating
-                {
-                    ProductId = productId,
-                    UserId = userId,
-                    Score = score
-                };
-                _context.Ratings.Add(rating);
-            }
-            _context.SaveChanges();
-
-            TempData["RateSuccess"] = "Your rating has been submitted.";
-            return RedirectToAction("Details", new { id = productId });
-        }*/
-
-
-
-        /*public IActionResult GetCategories()
-        {
-            var categories = _context.Categories.ToList();
-            if (categories == null || !categories.Any())
-            {
-                categories = new List<Category>();
-            }
-            //ViewData["Categories"] = categories;
-            return View("GetCategories", categories);
-        }*/
+        
 
         public IActionResult Privacy()
         {
