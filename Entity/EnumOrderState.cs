@@ -4,8 +4,8 @@ namespace MiniCartMvc.Entity
 {
     public enum EnumOrderState
     {
-        Waiting,
-        Canceled,
-        Completed
+        Waiting = 0,
+        Canceled = 1,
+        Completed = 2
     }
 }

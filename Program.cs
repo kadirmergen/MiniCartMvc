@@ -23,12 +23,12 @@ namespace MiniCartMvc
                 options.Cookie.IsEssential = true; // GDPR uyumu için
             });
             builder.Services.AddControllersWithViews();
-            builder.Services.AddDbContext<IdentityDataContext>(options =>
+            builder.Services.AddDbContext<DataContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("ApplicationDatabase")));
             builder.Services.AddDbContext<DataContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("ApplicationDatabase")));
             builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
-                .AddEntityFrameworkStores<IdentityDataContext>().AddDefaultTokenProviders();
+                .AddEntityFrameworkStores<DataContext>().AddDefaultTokenProviders();
             
             builder.Services.AddAuthentication("ApplicationCookie").AddCookie("ApplicationCookie", options =>
             {

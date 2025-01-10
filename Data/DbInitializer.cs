@@ -13,7 +13,6 @@ public static class DbInitializer
         // Rol ve kullanıcı servislerini al
         var roleManager = serviceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
         var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
-        var context = serviceProvider.GetRequiredService<IdentityDataContext>();
 
 
         // Roller

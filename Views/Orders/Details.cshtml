@@ -10,10 +10,31 @@
         ViewData["Title"] = "Details";
         Layout = "~/Views/Shared/_Layout.cshtml";
     }
-    
+
 }
 
 <div class="container mt-5">
+
+    @if (TempData["UserNotFoundError"] != null)
+    {
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            @TempData["UserNotFoundError"]
+        </div>
+    }
+
+    @if (TempData["RateSuccess"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["RateSuccess"]
+        </div>
+    }
+
+    @if (TempData["RateError"] != null)
+    {
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            @TempData["RateError"]
+        </div>
+    }
     <div class="row">
         <div class="col-md-12">
             <h2>Order Details Information</h2>
@@ -96,6 +117,7 @@
                                 <th>Product Name</th>
                                 <th>Quantity</th>
                                 <th>Price</th>
+                                <th>Your Rating</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -126,6 +148,32 @@
                                     <td>
                                         <i class="fa fa-usd" aria-hidden="true"></i>
                                         @item.Price
+                                    </td>
+                                    <td>
+                                        @if (Model.OrderState == EnumOrderState.Completed)
+                                        {
+                                            <form asp-controller="Orders" asp-action="RateProducts" method="post">
+                                                <input type="hidden" name="orderId" value="@Model.OrderId" />
+                                                @foreach (var itemL in Model.OrderLines)
+                                                {
+                                                    <div class="form-group">
+                                                        <label>@itemL.ProductName</label>
+                                                        <select name="ratings[@itemL.ProductId]" class="form-control form-control-sm">
+                                                            @for (int i = 1; i <= 5; i++)
+                                                            {
+                                                                <option value="@i" selected="@(itemL.UserRating == i ? "selected" : null)">@i</option>
+
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                }
+                                                <button type="submit" class="btn btn-primary btn-sm mt-1">Submit</button>
+                                            </form>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">Rating available after order completion</span>
+                                        }
                                     </td>
                                     <td>
                                         <a href="/Home/Details/@item.ProductId" class="btn btn-primary btn-sm" target="_blank">

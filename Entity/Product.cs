@@ -16,11 +16,15 @@ namespace MiniCartMvc.Entity
         public bool IsApproved { get; set; }
         public int CategoryId { get; set; }
         public Category? Category { get; set; }
+        public List<Rating>? Ratings { get; set; } = new List<Rating>();
 
         [NotMapped]
         public IFormFile? Image { get; set; }
 
         public List<Comment>? Comments { get; set; } = new List<Comment>();
+
+        [NotMapped]
+        public double AverageRating { get; set; }
 
     }
 }

@@ -149,6 +149,7 @@ namespace MiniCartMvc.Controllers
             order.Strict = shippingDetail.Strict;
             order.Street = shippingDetail.Street;
             order.ZipCode = shippingDetail.ZipCode;
+            
 
             order.OrderLines = new List<OrderLine>();
 

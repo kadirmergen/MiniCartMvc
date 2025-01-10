@@ -8,6 +8,8 @@
         public double Price { get; set; }
         public int Stock { get; set; }
         public string? Image { get; set; }
+        public double AverageRating { get; set; }
+
 
         // Yorumlar
         public List<CommentViewModel> Comments { get; set; } = new List<CommentViewModel>();

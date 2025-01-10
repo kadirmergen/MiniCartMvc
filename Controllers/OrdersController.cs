@@ -1,10 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using MiniCartMvc.Data;
 using MiniCartMvc.Entity;
+using MiniCartMvc.Identity;
 using MiniCartMvc.Models;
 using MiniCartMvc.ViewModels;
+using System.Security.Claims;
 using static MiniCartMvc.Models.OrderDetailsModel;
 using static NuGet.Packaging.PackagingConstants;
 
@@ -61,7 +64,7 @@ namespace MiniCartMvc.Controllers
 
             return View(ordersForCustomer);
         }
-        
+
         [Authorize]
         public ActionResult Details(int id)
         {
@@ -100,6 +103,60 @@ namespace MiniCartMvc.Controllers
             return View(entity);
         }
 
+        [HttpPost]
+        public IActionResult RateProducts(int orderId, Dictionary<int, int> ratings)
+        {
+            var userName = User.Identity.Name;
+            var user = _context.Users.FirstOrDefault(u => u.UserName == userName);
+
+            if (user == null)
+            {
+                TempData["UserNotFoundError"] = "User not found in the system.";
+                return RedirectToAction("Details", new { id = orderId });
+            }
+
+            var userId = user.Id;
+
+            // Siparişin tamamlanmış olduğundan emin olun
+            var order = _context.Orders
+                .Include(o => o.OrderLines)
+                .FirstOrDefault(o => o.Id == orderId && o.UserName == userName);
+
+            if (order == null || order.OrderState != EnumOrderState.Completed)
+            {
+                TempData["RateError"] = "You can only rate products from completed orders.";
+                return RedirectToAction("Details", new { id = orderId });
+            }
+
+            foreach (var rating in ratings)
+            {
+                var productId = rating.Key;
+                var score = rating.Value;
+                // Daha önce oy verilmiş mi kontrol et
+                var existingRating = _context.Ratings.FirstOrDefault(r => r.ProductId == productId && r.UserId == userId);
+                if (existingRating != null)
+                {
+                    existingRating.Score = score; // Mevcut oyu güncelle
+                }
+                else
+                {
+                    // Yeni oy ekle
+                    _context.Ratings.Add(new Rating
+                    {
+                        ProductId = productId,
+                        UserId = userId,
+                        Score = score
+                    });
+                }
+            }
+
+
+            _context.SaveChanges();
+
+            TempData["RateSuccess"] = "Your ratings have been submitted.";
+            return RedirectToAction("Details", new { id = orderId });
+        }
+
         public ActionResult UpdateOrderState(int orderId, EnumOrderState orderState)
         {
             var order = _context.Orders.FirstOrDefault(i => i.Id == orderId);
@@ -113,8 +170,6 @@ namespace MiniCartMvc.Controllers
 
                 return RedirectToAction("Details", new { id = orderId });
             }
-
-
             return RedirectToAction("Index");
         }
     }

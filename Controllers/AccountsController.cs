@@ -11,18 +11,16 @@ namespace MiniCartMvc.Controllers
 {
     public class AccountsController : Controller
     {
-        private readonly IdentityDataContext _identityContext;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly RoleManager<ApplicationRole> _roleManager;
         private readonly DataContext _context;
 
-        public AccountsController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, RoleManager<ApplicationRole> roleManager, IdentityDataContext identityDataContext, DataContext context)
+        public AccountsController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, RoleManager<ApplicationRole> roleManager, DataContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
-            _identityContext = identityDataContext;
             _context = context;
         }
         [Authorize]
@@ -91,12 +89,12 @@ namespace MiniCartMvc.Controllers
                 }
 
                 // Check for unique email and username
-                if (_identityContext.Users.Any(u => u.Email == accountSettingsViewModel.Email && u.Id != user.Id))
+                if (_context.Users.Any(u => u.Email == accountSettingsViewModel.Email && u.Id != user.Id))
                 {
                     return Conflict("The email is already in use.");
                 }
 
-                if (_identityContext.Users.Any(u => u.UserName == accountSettingsViewModel.Username && u.Id != user.Id))
+                if (_context.Users.Any(u => u.UserName == accountSettingsViewModel.Username && u.Id != user.Id))
                 {
                     return Conflict("The username is already in use.");
                 }
@@ -109,8 +107,8 @@ namespace MiniCartMvc.Controllers
                 user.UserName = accountSettingsViewModel.Username ?? user.UserName;
 
                 // Değişiklikleri veritabanına kaydedin
-                _identityContext.Users.Update(user);
-                await _identityContext.SaveChangesAsync();
+                _context.Users.Update(user);
+                await _context.SaveChangesAsync();
 
                 TempData["SuccessMessage"] = "Account settings updated successfully.";
 

@@ -16,14 +16,12 @@ namespace MiniCartMvc.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly DataContext _context;
-        private readonly IdentityDataContext _identityDataContext;
 
 
-        public HomeController(ILogger<HomeController> logger, DataContext context, IdentityDataContext identityDataContext)
+        public HomeController(ILogger<HomeController> logger, DataContext context)
         {
             _logger = logger;
             _context = context;
-            _identityDataContext = identityDataContext;
         }
 
         public IActionResult Index()
@@ -47,14 +45,17 @@ namespace MiniCartMvc.Controllers
 
         public IActionResult Details(int id)
         {
-            var product = _context.Products.Include(p => p.Comments).Where(i => i.Id == id).FirstOrDefault();
+            var product = _context.Products.Include(p => p.Comments).Include(p => p.Ratings).Where(i => i.Id == id).FirstOrDefault();
             if (product == null)
             {
                 return NotFound();
             }
 
             var userIds = product.Comments.Select(c => c.UserId).Distinct().ToList();
-            var users = _identityDataContext.Users.Where(u => userIds.Contains(u.Id)).ToDictionary(u => u.Id, u => $"{u.Name} {u.Surname}");
+            var users = _context.Users.Where(u => userIds.Contains(u.Id)).ToDictionary(u => u.Id, u => $"{u.Name} {u.Surname}");
+
+            var avarageRating = product.Ratings.Any() ? product.Ratings.Average(r => r.Score) : 0;
+
             var productDetailsViewModel = new ProductDetailsViewModel
             {
                 Id = product.Id,
@@ -63,6 +64,7 @@ namespace MiniCartMvc.Controllers
                 Price = product.Price,
                 Stock = product.Stock,
                 Image = product.ImagePath,
+                AverageRating = avarageRating,
                 Comments = product.Comments.OrderByDescending(c => c.CreatedAt)
                 .Select(c => new CommentViewModel
                 {
@@ -131,7 +133,7 @@ namespace MiniCartMvc.Controllers
                 TempData["NotPurchasedError"] = "You can only comment on products you have purchased.";
                 return RedirectToAction("Details", new { id = productId });
             }
-            
+
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             var comment = new Comment
@@ -145,7 +147,50 @@ namespace MiniCartMvc.Controllers
             return RedirectToAction("Details", new { id = productId });
         }
 
+        /*[HttpPost]
+        public IActionResult RateProduct(int productId, int score)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                TempData["UserNotFoundError"] = "You must be logged in to rate a product.";
+                return RedirectToAction("Details", new { id = productId });
+            }
+
+            var hasPurchased = _context.Orders
+                .Include(o => o.OrderLines)
+                .Any(o => o.OrderLines.Any(ol => ol.ProductId == productId) &&
+                    o.UserName == userId &&
+                    o.OrderState == EnumOrderState.Completed);
+
+            if (!hasPurchased)
+            {
+                TempData["RateError"] = "You can only rate products you have purchased.";
+                return RedirectToAction("Details", new { id = productId });
+            }
+
+            var existingRating = _context.Ratings.FirstOrDefault(r => r.ProductId == productId && r.UserId == userId);
+
+            if (existingRating != null)
+            {
+                existingRating.Score = score;
+            }
+            else
+            {
+                var rating = new Rating
+                {
+                    ProductId = productId,
+                    UserId = userId,
+                    Score = score
+                };
+                _context.Ratings.Add(rating);
+            }
+            _context.SaveChanges();
+
+            TempData["RateSuccess"] = "Your rating has been submitted.";
+            return RedirectToAction("Details", new { id = productId });
+        }*/
 
 
 

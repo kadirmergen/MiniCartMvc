@@ -6,6 +6,7 @@ namespace MiniCartMvc.Models
     {
         public int OrderId { get; set; }
         public string UserName { get; set; }
+
         public string OrderNumber { get; set; }
         public double Total { get; set; }
         public DateTime OrderDate { get; set; }
@@ -26,7 +27,8 @@ namespace MiniCartMvc.Models
             public string ProductName { get; set; }
             public string? Image { get; set; }
             public int Quantity { get; set; }
-            public double Price { get; set; } 
+            public double Price { get; set; }
+            public int? UserRating { get; set; }
         }
     }
 }
