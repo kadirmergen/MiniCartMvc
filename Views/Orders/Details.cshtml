@@ -150,30 +150,38 @@
                                         @item.Price
                                     </td>
                                     <td>
-                                        @if (Model.OrderState == EnumOrderState.Completed)
+                                        @if(User.IsInRole("admin"))
                                         {
-                                            <form asp-controller="Orders" asp-action="RateProducts" method="post">
-                                                <input type="hidden" name="orderId" value="@Model.OrderId" />
-                                                @foreach (var itemL in Model.OrderLines)
-                                                {
-                                                    <div class="form-group">
-                                                        <label>@itemL.ProductName</label>
-                                                        <select name="ratings[@itemL.ProductId]" class="form-control form-control-sm">
-                                                            @for (int i = 1; i <= 5; i++)
-                                                            {
-                                                                <option value="@i" selected="@(itemL.UserRating == i ? "selected" : null)">@i</option>
-
-                                                            }
-                                                        </select>
-                                                    </div>
-                                                }
-                                                <button type="submit" class="btn btn-primary btn-sm mt-1">Submit</button>
-                                            </form>
+                                            <span class="text-muted">Admin can't change rates</span>
                                         }
                                         else
                                         {
-                                            <span class="text-muted">Rating available after order completion</span>
+                                            @if (Model.OrderState == EnumOrderState.Completed)
+                                            {
+                                                <form asp-controller="Orders" asp-action="RateProducts" method="post">
+                                                    <input type="hidden" name="orderId" value="@Model.OrderId" />
+                                                    @foreach (var itemL in Model.OrderLines)
+                                                    {
+                                                        <div class="form-group">
+                                                            <label>@itemL.ProductName</label>
+                                                            <select name="ratings[@itemL.ProductId]" class="form-control form-control-sm">
+                                                                @for (int i = 1; i <= 5; i++)
+                                                                {
+                                                                    <option value="@i" selected="@(itemL.UserRating == i ? "selected" : null)">@i</option>
+
+                                                                }
+                                                            </select>
+                                                        </div>
+                                                    }
+                                                    <button type="submit" class="btn btn-primary btn-sm mt-1">Submit</button>
+                                                </form>
+                                            }
+                                            else
+                                            {
+                                                <span class="text-muted">Rating available after order completion</span>
+                                            }
                                         }
+                                        
                                     </td>
                                     <td>
                                         <a href="/Home/Details/@item.ProductId" class="btn btn-primary btn-sm" target="_blank">
