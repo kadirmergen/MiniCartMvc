@@ -14,6 +14,10 @@ namespace MiniCartMvc
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.WebHost.ConfigureKestrel(serverOptions =>
+            {
+                serverOptions.ListenAnyIP(5000); // HTTP
+            });
             // Add services to the container.
             builder.Services.AddDistributedMemoryCache(); // In-memory cache
             builder.Services.AddSession(options =>
